@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 permission = "YES";
                 fragment1.Permission(permission);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
                 final Dialog dialog=new Dialog(MainActivity.this);
                 dialog.setContentView(R.layout.dialog_layout);
 
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 dialog.setCancelable(false);
-                dialog.setTitle("Назовите тест");
 
                 dialog.show();
             }
