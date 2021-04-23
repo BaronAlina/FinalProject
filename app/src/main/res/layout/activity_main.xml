@@ -20,8 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -30,4 +28,19 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="60dp"/>
+    </LinearLayout>
+
+    <include layout="@layout/content_main" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
