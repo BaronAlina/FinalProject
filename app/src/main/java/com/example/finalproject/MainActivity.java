@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -23,10 +24,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    ArrayList<String> arrayList;
+    ArrayList<View> testList=new ArrayList<>();
     TextView textView;
     String permission,
             editName="edit name",
@@ -53,53 +59,55 @@ public class MainActivity extends AppCompatActivity {
 //        LinearLayout linLayout = (LinearLayout) findViewById(R.id.fragment);
 //        linLayout.addView(view);
 
-
-//        final Dialog dialog=new Dialog(MainActivity.this);
-//        dialog.setContentView(R.layout.dialog_layout);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                permission = "YES";
-////                fragment1.Permission(permission);
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-//                final EditText editText=dialog.findViewById(R.id.edText);
-//                Button button=dialog.findViewById(R.id.btn);
-//                Button button1=dialog.findViewById(R.id.btn1);
-//                button1.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        permission=editText.getText().toString();
-//                        LayoutInflater inflater=getLayoutInflater();
+        final Dialog dialog=new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.dialog_layout);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                permission = "YES";
+//                fragment1.Permission(permission);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                final EditText editText=dialog.findViewById(R.id.edText);
+                Button button=dialog.findViewById(R.id.btn);
+                Button button1=dialog.findViewById(R.id.btn1);
+                button1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        permission=editText.getText().toString();
+                        fragment1.Permission(permission);
+                        LayoutInflater inflater=getLayoutInflater();
 //                        layout = findViewById(R.id.list);
 //                        view1 = inflater.inflate(R.layout.fragment_first, null, false);
+////                        testList.add(view1);
 //                        layout.addView(view1);
-//                        textView = view1.findViewById(R.id.text);
+//                        textView = view1.findViewById(R.id.text2);
 //                        textView.setOnCreateContextMenuListener(MainActivity.this);
 //                        textView.setText(permission);
-//                        fragment1.Permission(permission);
-//                        dialog.dismiss();
-//                    }
-//                });
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.setCancelable(false);
-//                dialog.show();
-//            }
-//        });
+                        editText.getText().clear();
+                        permission=editTest;
+                        dialog.dismiss();
+                    }
+                });
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
+            }
+        });
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         switch (v.getId()){
-            case R.id.text:
+            case R.id.text2:
                 menu.add(0, EDIT_NAME, 0, "edit name");
-                menu.add(1, EDIT_TEST, 1, "edit test");
+//                menu.add(1, EDIT_TEST, 1, "edit test");
                 menu.add(2, DELETE, 2, "delete test");
                 break;
         }
@@ -133,12 +141,10 @@ public class MainActivity extends AppCompatActivity {
                 dialog1.setCancelable(false);
                 dialog1.show();
                 break;
-            case EDIT_TEST:
-                permission="yes";
-//                intent.putExtra("yes", permission);
-//                intent.setClass(MainActivity.this, SecondFragment.class);
-//                startActivity(intent);
-                break;
+//            case EDIT_TEST:
+//                permission="yes";
+//                fragment1.Permission(permission);
+//                break;
             case DELETE:
                 layout.removeView(view1);
                 break;

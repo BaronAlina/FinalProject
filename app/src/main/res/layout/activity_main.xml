@@ -20,13 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/textV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
@@ -43,4 +36,12 @@
     </LinearLayout>
 
     <include layout="@layout/content_main" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
