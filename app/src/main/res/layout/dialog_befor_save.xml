@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:text="Set the maximum number of points for a correct answer:"
+        android:textSize="20dp">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/points"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:inputType="number">
+
+    </EditText>
+
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textSize="20dp"
+        android:layout_marginTop="100dp"
+        >
+
+    </Button>
+
+    <Button
+        android:id="@+id/btnSaveAll"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:text="Save All"
+        android:textAllCaps="false"
+        android:textSize="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="130dp">
+
+    </Button>
+
+</RelativeLayout>

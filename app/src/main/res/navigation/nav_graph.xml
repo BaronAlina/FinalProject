@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_Test"
+            app:destination="@id/Test" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -24,5 +27,23 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_TestCreate"
+            app:destination="@id/TestCreate" />
     </fragment>
+    <activity
+        android:id="@+id/TestCreate"
+        android:name="com.example.finalproject.TestCreate"
+        android:label="@string/third_activity_label"
+        tools:layout="@layout/content_main">
+
+    </activity>
+
+    <activity
+        android:id="@+id/Test"
+        android:name="com.example.finalproject.Test"
+        android:label="@string/four_activity_label"
+        tools:layout="@layout/content_main">
+
+    </activity>
 </navigation>
