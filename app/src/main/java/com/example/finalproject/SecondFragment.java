@@ -22,6 +22,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class SecondFragment extends Fragment implements View.OnClickListener {
 
     final int EDIT_NAME_QUESTION=1;
@@ -50,7 +52,28 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
 
         manager=new DBManager(context);
         manager.openDb();
-        for (String name:manager.getNQ(/*FirstFragment.text*/ FirstFragment.text)) {
+        ArrayList<String> arr=new ArrayList<>();
+        ArrayList<String> arr2=new ArrayList<>();
+        for (String name:manager.getNQ(FirstFragment.text)) {
+            if (name!=null){
+                arr.add(name);
+            }
+        }
+        int i=0;
+        for (String name:arr){
+
+            if (i==0){
+                arr2.add(name);
+            }else {
+                if (!(arr2.contains(name))){
+                    arr2.add(name);
+                }
+            }
+            i=1;
+            Log.d("arr", arr+"");
+            Log.d("arr2", arr2+"");
+        }
+        for (String name:arr2) {
             if (name != "") {
                 Log.d("NOW", number_of_questions + ". " + name);
                 if (name!=null){
@@ -103,7 +126,7 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                 i+="";
                 if (text!=null){
                     manager.openDb();
-                    manager.insertSettings(FirstFragment.text+i, text);
+                    manager.insertSettings(FirstFragment.text, text);
 //                    manager.insertNameTest(FirstFragment.text);
 //                    manager.insertNameQuestion(text);
 //                manager.insertNameQuestion(FirstFragment.text, text);
@@ -175,8 +198,7 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                 editText.setText("");
                 break;
             case EDIT_QUESTION:
-                String if_ed=textView.getText().toString();
-                text=if_ed;
+                text=name_question1;
                 NavHostFragment.findNavController(SecondFragment.this)
                         .navigate(R.id.action_SecondFragment_to_TestCreate);
 //                dialog = null;
@@ -190,7 +212,7 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                 String del=textView.getText().toString();
                 String [] chc=del.split("\\. ");
                 manager.openDb();
-                manager.deleteQ(chc[1]);
+                manager.deleteString(chc[1]);
                 manager.closeDb();
                 number_of_questions--;
                 break;

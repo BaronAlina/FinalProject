@@ -50,8 +50,8 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         fab.setOnClickListener(this);
         dialog=new Dialog(context);
         arrayList=new ArrayList<>();
-        forTest=layout.findViewById(R.id.button);
-        forTest.setOnClickListener(this);
+//        forTest=layout.findViewById(R.id.button);
+//        forTest.setOnClickListener(this);
         manager=new DBManager(context);
         manager.openDb();
         ArrayList<String> arr=new ArrayList<>();
@@ -72,15 +72,21 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
             }
             i=1;
         }
-        for (String name:manager.getNameTest()) {
+        for (final String name:manager.getNameTest()) {
             if (name!=null) {
-
-
                     textView = new TextView(context);
                     textView.setText(name);
                     textView.setTextSize(25);
                     textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     textView.setOnCreateContextMenuListener(FirstFragment.this);
+                    textView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            text=name;
+                            NavHostFragment.findNavController(FirstFragment.this)
+                                    .navigate(R.id.action_FirstFragment_to_Test);
+                        }
+                    });
                     layout.addView(textView);
             }
         }
@@ -126,6 +132,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                 textView.setTextSize(25);
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 textView.setOnCreateContextMenuListener(FirstFragment.this);
+                textView.setOnClickListener(this);
                 arrayList.add(textView);
                 layout.addView(textView);
 //                manager.openDb();
@@ -136,10 +143,12 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
             case R.id.btn:
                 dialog.dismiss();
                 break;
-            case R.id.button:
+            case R.id.text:
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_Test);
-                break;
+            default:
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_Test);
         }
     }
 
@@ -203,6 +212,8 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                 String del=textView.getText().toString();
                 manager.openDb();
                 manager.delete(del);
+//                manager.deleteQ(SecondFragment.text);
+//                manager.deleteTextQ(TestCreate.text_question);
                 manager.closeDb();
                 break;
         }

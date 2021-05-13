@@ -32,8 +32,9 @@ public class DBManager {
     }
 
     //пишем в БД название вопроса, текст вопроса, вариант, правильный вариант, все варианты, балл, ссылка
-    public void insertSet(String name_question, String text_question, int variant, String correct_variants, String all_variants, String points, String uri){
+    public void insertSet(String name_test, String name_question, String text_question, int variant, String correct_variants, String all_variants, String points, String uri){
         ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_TEST_NAME, name_test);
         contentValues.put(Constants.COLUMN_NAME_QUESTION, name_question);
         contentValues.put(Constants.COLUMN_TEXT_QUESTION, text_question);
         contentValues.put(Constants.COLUMN_VARIANT, variant);
@@ -149,6 +150,241 @@ public class DBManager {
     }
 
     //метод для передачи в класс Test настроек вопросов
+    public List<String> getTxt(String name_question){
+        List<String> nameL = new ArrayList<>();
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+
+        ArrayList<String > nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<String> nameQ = new ArrayList<>();
+        nameQ.clear();
+        cursor.moveToFirst();
+
+        while (cursor.moveToNext()) {
+            Log.d("GETNQ", "start");
+            String i1 = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_TEXT_QUESTION));
+            nameQ.add(i1);
+            Log.d("GETNQ", "final");
+        }
+        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+//                        String i=nameT.get(d);
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+                    for (String n1 : nameQ) {
+                        int index2 = nameQ.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != null) {
+                                nameL.add(n1);
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+//                                    for (int n=0; n<=index2; n++){
+//                                        nameQ.set(n, "");
+//                                    }
+                        Log.d("In index2", "" + index2 + " " + nameQ);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        cursor.close();
+        return nameL;
+    }
+
+    public int getVar(String name_question){
+        int variant=0;
+//        List<Integer> variants=new ArrayList<>();
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+
+        ArrayList<String > nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<Integer> variants = new ArrayList<>();
+//        variants.clear();
+//        cursor.moveToFirst();
+//        while (cursor.moveToNext()) {
+//            Log.d("GETNQ", "start");
+//            int i1 = cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_VARIANT));
+//            variants.add(i1);
+//            Log.d("GETNQ", "final");
+//        }
+
+        for (String i : nameT) {
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+
+                    variants.clear();
+                    cursor.moveToFirst();
+                    while (cursor.moveToNext()) {
+                        Log.d("GETNQ", "start");
+                        int i1 = cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_VARIANT));
+                        variants.add(i1);
+                        Log.d("GETNQ", "final");
+                    }
+
+                    for (int n1 : variants) {
+                        int index2 = variants.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != 0) {
+                                variant= n1;
+
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+//                        if (index2!=0){
+//                            variants.set(index2, 0);
+//                        }
+                                    for (int n=1; n<=index2; n++){
+                                        Log.d("Null for ", n-1+" index");
+                                        variants.set(n, 0);
+                                    }
+                        Log.d("In index2", "" + index2 + " " + variants);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        return variant;
+    }
+
+    public String getAll_Var(String name_question){
+        String all=null;
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+        ArrayList<String> nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<String> allVar=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            String n =cursor.getString(cursor.getColumnIndex(Constants.COLUMN_ALL_VARIANTS));
+            allVar.add(n);
+        }
+
+        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+//                        String i=nameT.get(d);
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+                    for (String n1 : allVar) {
+                        int index2 = allVar.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != null) {
+                                all=n1;
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+//                                    nameQ.set(index2, "");
+                                    for (int n=1; n<=index2; n++){
+                                        allVar.set(n-1, "");
+                                    }
+                        Log.d("In index2", "" + index2);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        Log.d("All", all+"");
+        return all;
+    }
+
+    public String getCor_Var(String name_question){
+        String correct=null;
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+        ArrayList<String> nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<String> corVar=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            String n =cursor.getString(cursor.getColumnIndex(Constants.COLUMN_CORRECT_VARIANT));
+            corVar.add(n);
+        }
+
+        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+//                        String i=nameT.get(d);
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+                    for (String n1 : corVar) {
+                        int index2 = corVar.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != null) {
+                                correct=n1;
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+//                                    corVar.set(index2, "");
+//                                    for (int n=1; n<=index2; n++){
+//                                        corVar.set(n, "");
+//                                    }
+                        Log.d("In index2", "" + index2);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        Log.d("CORRECT", correct+"");
+        return correct;
+    }
 
     public List<String> getNQ(String name_test){
         List<String> nameListF=new ArrayList<>();
@@ -209,7 +445,8 @@ public class DBManager {
 
                                     }
                                     Log.d("For index1", "2. " + i+" index: "+ index);
-//                                    for (int n=0; n<=index2; n++){
+//                                    nameQ.set(index2, "");
+//                                    for (int n=0; n<index2; n++){
 //                                        nameQ.set(n, "");
 //                                    }
                                     Log.d("In index2", "" + index2);
@@ -272,6 +509,34 @@ public class DBManager {
         Log.d("Success", ""+success);
     }
 
+    public void updateTxt(String text_question1, String text_question2){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_TEXT_QUESTION, text_question2);
+        database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_TEXT_QUESTION + " = '" + text_question1 + "'", null);
+    }
+
+    public void updateVar(int variant1, int variant2){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_VARIANT, variant2);
+        database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_VARIANT+" = '"+variant1+"'", null);
+    }
+
+    public void updateAll_Var(String all_var1, String all_var2){
+        Log.d("up", all_var1+" "+all_var2);
+        Log.d("Success", "false");
+        boolean success = false;
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_ALL_VARIANTS, all_var2);
+        success=database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_ALL_VARIANTS+" = '"+all_var1+"'", null)>0;
+        Log.d("Success", ""+success);
+    }
+
+    public void  updateCor_Var(String cor_var1, String cor_var2){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_CORRECT_VARIANT, cor_var2);
+        database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_CORRECT_VARIANT+" = '"+cor_var1+"'", null);
+    }
+
     //delete in COLUMN_TEST_NAME
     public boolean delete(String name_text){
         Log.d("Success", "false");
@@ -289,6 +554,14 @@ public class DBManager {
         success=database.delete(Constants.TABLE_NAME, Constants.COLUMN_NAME_QUESTION + " ='"+name_question+"'", null)>0;
         Log.d("Success", ""+success);
         return success;
+    }
+
+    public void deleteTextQ(String text_question){
+        database.delete(Constants.TABLE_NAME, Constants.COLUMN_TEXT_QUESTION+" ='"+text_question+"'", null);
+    }
+
+    public void deleteString(String name_question){
+        database.delete(Constants.TABLE_NAME, Constants.COLUMN_NAME_QUESTION+" = ?", new String[] {String.valueOf(name_question)});
     }
 
     public void closeDb(){
