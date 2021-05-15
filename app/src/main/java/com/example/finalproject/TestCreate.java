@@ -1,8 +1,10 @@
 package com.example.finalproject;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -28,6 +30,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -82,6 +86,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     public static String cor_var="";
     public static String all_var="";
     public static String uri;
+    String savedUri, savePoints;
 
     //для диалога
     Dialog dialog;
@@ -98,7 +103,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_layout);
-
 //        cor_var="";
 //        all_var="";
         manager=new DBManager(this);
@@ -120,6 +124,23 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
         save=findViewById(R.id.saveCrate);
         delete_image=findViewById(R.id.deleteCreate);
         add_variants=findViewById(R.id.addBtn);
+
+        imageView = findViewById(R.id.imageView);
+        Button PickImage = findViewById(R.id.btnCreate);
+
+
+
+        if (ContextCompat.checkSelfPermission(TestCreate.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(TestCreate.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
+        }else {
+            manager.openDb();
+            uri=manager.getUri(SecondFragment.text);
+            manager.closeDb();
+            Log.d("ТУТ ПРОВЕРКА", uri+"");
+            if (uri!=null){
+                loadImages();
+            }
+        }
 
         manager.openDb();
 
@@ -302,8 +323,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 
 
 
-        imageView = findViewById(R.id.imageView);
-        Button PickImage = findViewById(R.id.btnCreate);
+
         PickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,6 +336,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             @Override
             public void onClick(View v) {
                 if (picture!=0){
+//                    imageView.getResources();
+                    uri=imageView.getResources().toString();
+                    manager.openDb();
+                    manager.updateImage(uri, "");
+                    manager.closeDb();
+                    savedUri="";
                     imageView.setImageResource(0);
                     picture--;
                 }
@@ -328,7 +354,13 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 //                removeForPoint.addView(forPoint);
                 dialog=new Dialog(TestCreate.this);
                 dialog.setContentView(R.layout.dialog_befor_save);
-                edDialog=dialog.findViewById(R.id.points);
+                edPoints=dialog.findViewById(R.id.points);
+                manager.openDb();
+                points=manager.getPoints(SecondFragment.text);
+                Log.d("points", points+"");
+                edPoints.setText(points);
+                savePoints=points;
+                manager.closeDb();
                 cancel=dialog.findViewById(R.id.cancel);
                 cancel.setOnClickListener(TestCreate.this);
                 saveAll=dialog.findViewById(R.id.btnSaveAll);
@@ -346,6 +378,28 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 //                points=edPoints.getText().toString();
 //            }
 //        });
+
+    }
+
+    public void loadImages(){
+        manager.openDb();
+        uri=manager.getUri(SecondFragment.text);
+        savedUri=uri;
+        Log.d("PRINYT", uri+"");
+        if (uri!=null){
+            imageUri=Uri.parse(uri);
+            try {
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                Log.d("imageStream", imageStream+"");
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                Log.d("selectedImage", selectedImage+"");
+                imageView.setImageBitmap(selectedImage);
+                picture++;
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+        }
+        manager.closeDb();
     }
 
 //    @Override
@@ -365,9 +419,10 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 break;
             case R.id.btnSaveAll:
                 Log.d("SAVE", cor_var2+" "+all_var2);
+                points=edPoints.getText().toString();
                 if (cor_var2==null && all_var2==null){
-                    edPoints=dialog.findViewById(R.id.points);
-                    points=edPoints.getText().toString();
+//                    edPoints=dialog.findViewById(R.id.points);
+
                     if (variant==0){
                         variant=1;
                     }
@@ -412,6 +467,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                         uri="";
                         if (imageUri!=null){
                             uri=imageUri.toString();
+                            Log.d("URI", uri);
                         }else {
                             uri=null;
                         }
@@ -449,10 +505,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("COR_VAR", cor_var+"");
                             Log.d("ALL_VAR", all_var+"");
                             Log.d("points", points+"");
-                            Log.d("uri", uri+"");
+                            Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
+                            manager.updateImage(savedUri, uri);
+                            manager.updatePoints(savePoints, points);
                             manager.closeDb();
                         }if (variant==2){
                             exactAnswer=findViewById(R.id.editExactAnswer);
@@ -465,10 +523,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("COR_VAR", cor_var+"");
                             Log.d("ALL_VAR", all_var+"");
                             Log.d("points", points+"");
-                            Log.d("uri", uri+"");
+                            Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
                             manager.updateCor_Var(cor_var2, cor_var);
                             manager.updateAll_Var(all_var2, null);
+                            manager.updatePoints(savePoints, points);
+                            manager.updateImage(savedUri, uri);
 //                            manager.updateTxt(pr_txt, text_question);
                             manager.closeDb();
                         }
@@ -498,11 +558,13 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("COR_VAR", cor_var2+" update "+cor_var);
                             Log.d("ALL_VAR", all_var2+" update "+all_var);
                             Log.d("points", points+"");
-                            Log.d("uri", uri+"");
+                            Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
                             manager.updateVar(savedVar, variant);
+                            manager.updateImage(savedUri, uri);
+                            manager.updatePoints(savePoints, points);
 //                            manager.updateTxt(pr_txt, text_question);
                             manager.closeDb();
                             dialog.dismiss();
@@ -530,11 +592,13 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("COR_VAR", cor_var2+" update "+cor_var);
                             Log.d("ALL_VAR", all_var2+" update "+all_var);
                             Log.d("points", points+"");
-                            Log.d("uri", uri+"");
+                            Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
                             manager.updateVar(savedVar, variant);
+                            manager.updateImage(savedUri, uri);
+                            manager.updatePoints(savePoints, points);
 //                            manager.updateTxt(pr_txt, text_question);
                             manager.closeDb();
                             dialog.dismiss();

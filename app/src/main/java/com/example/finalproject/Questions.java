@@ -1,0 +1,185 @@
+package com.example.finalproject;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+public class Questions extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+
+    String name;
+    DBManager manager;
+    Button button;
+    ImageView imageView;
+    TextView textView, textCreate;
+    EditText editText;
+    LinearLayout layout, layout2, layoutBasic, linLayout;
+    Uri imageUri;
+    Bitmap selectedImage;
+    int index=1, variant;
+    ArrayList<String> nameQ=new ArrayList<>();
+    ArrayList<String> arr=new ArrayList<>();
+    ArrayList<String> arr2=new ArrayList<>();
+    String all_var;
+    View view;
+    LayoutInflater ltInflater;
+    CheckBox checkBox;
+
+    String uri, text, variants;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.question_layout);
+        name=getIntent().getStringExtra("name_question");
+        button=findViewById(R.id.save_and_next);
+        button.setOnClickListener(this);
+        imageView=findViewById(R.id.imageView);
+        textView=findViewById(R.id.textView);
+        editText=findViewById(R.id.edText);
+        layout=findViewById(R.id.layout);
+        layout2=findViewById(R.id.layout2);
+        layoutBasic=findViewById(R.id.layoutBasic);
+        manager=new DBManager(this);
+        manager.openDb();
+
+        for (String name:manager.getNQ(FirstFragment.text)) {
+            if (name!=null){
+                arr.add(name);
+            }
+        }
+        int i=0;
+        for (String name:arr){
+
+            if (i==0){
+                arr2.add(name);
+            }else {
+                if (!(arr2.contains(name))){
+                    arr2.add(name);
+                }
+            }
+            i=1;
+            Log.d("arr", arr+"");
+            Log.d("arr2", arr2+"");
+        }
+        for (String name:arr2) {
+            if (name != "") {
+                if (name!=null){
+                    nameQ.add(name);
+                }
+            }
+
+        }
+        manager.closeDb();
+
+        String first=arr2.get(0);
+        Log.d("FIRST", first+"");
+        arr2.remove(0);
+        manager.openDb();
+        uri=manager.getUri(first);
+        Log.d("URI", uri+"");
+        variant=manager.getVar(first);
+        Log.d("VARIANT", variant+"");
+        for (String ed_text:manager.getTxt(first)){
+            Log.d("Ed_text", ed_text+"");
+            textView.setTextSize(20);
+            textView.setText(ed_text);
+        }
+
+        if (uri!=null){
+            imageUri= Uri.parse(uri);
+            try {
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                imageView.setImageBitmap(selectedImage);
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+        }
+        if (variant==1){
+            layoutBasic.removeView(layout2);
+            all_var=manager.getAll_Var(first);
+            Log.d("ALL_VARIANTS", all_var+"");
+            if (all_var!=null){
+                String[] variants=all_var.split("\\| ");
+                for (String var:variants){
+                    ltInflater = getLayoutInflater();
+                    view = ltInflater.inflate(R.layout.edit, null, false);
+                    checkBox=view.findViewById(R.id.checkbox2);
+                    checkBox.setOnCheckedChangeListener(this);
+                    textCreate=view.findViewById(R.id.textCreate);
+                    textCreate.setHint("");
+                    textCreate.setText(var);
+                    linLayout=findViewById(R.id.layout);
+                    linLayout.addView(view);
+                }
+            }
+        }if (variant==2){
+            layoutBasic.removeView(layout);
+//            layoutBasic.addView(layout2);
+        }
+        manager.closeDb();
+    }
+
+    @Override
+    public void onClick(View v) {
+        name=nameQ.get(index);
+        manager.openDb();
+        uri=manager.getUri(name);
+        if (uri!=null){
+            imageUri= Uri.parse(uri);
+            try {
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                imageView.setImageBitmap(selectedImage);
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+        }
+        for (String ed_text:manager.getTxt(name)){
+            textView.setText(ed_text);
+        }
+        variant=manager.getVar(name);
+        if (variant==1){
+            layoutBasic.removeView(layout2);
+            all_var=manager.getAll_Var(name);
+            if (all_var!=null){
+                String[] variants=all_var.split("\\| ");
+                for (String var:variants){
+                    ltInflater = getLayoutInflater();
+                    view = ltInflater.inflate(R.layout.edit, null, false);
+                    checkBox=view.findViewById(R.id.checkbox2);
+                    checkBox.setOnCheckedChangeListener(this);
+                    textCreate=view.findViewById(R.id.textCreate);
+                    textCreate.setText(var);
+                    linLayout=findViewById(R.id.layout);
+                    linLayout.addView(view);
+                }
+            }
+        }if (variant==2){
+            layoutBasic.removeView(layout);
+        }
+        index++;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+    }
+}

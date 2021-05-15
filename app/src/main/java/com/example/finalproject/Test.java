@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -24,7 +27,7 @@ import java.util.ArrayList;
 public class Test extends Activity {
 
     TextView txt;
-    ListView listView;
+    public static ListView listView;
     ArrayList<String> arrayList=new ArrayList<>();
     ArrayAdapter adapter;
 
@@ -73,6 +76,18 @@ public class Test extends Activity {
         adapter=new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
         manager.closeDb();
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView toName;
+                String name;
+                toName=(TextView)view;
+                name = toName.getText().toString();
+                Intent intent=new Intent();
+                intent.putExtra("name_question", name);
+                intent.setClass(Test.this, Questions.class);
+                startActivity(intent);
+            }
+        });
     }
 }

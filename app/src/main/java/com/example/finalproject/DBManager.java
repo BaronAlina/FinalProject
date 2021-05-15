@@ -86,6 +86,63 @@ public class DBManager {
 //        return tempList;
 //    }
 
+    public String getPoints(String name_question){
+        String point =null;
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+
+        ArrayList<String > nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<String> pointA = new ArrayList<>();
+        pointA.clear();
+        cursor.moveToFirst();
+
+        while (cursor.moveToNext()) {
+            Log.d("GETNQ", "start");
+            String i1 = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_POINTS));
+            pointA.add(i1);
+            Log.d("GETNQ", "final");
+        }
+        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+//                        String i=nameT.get(d);
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+                    for (String n1 : pointA) {
+                        int index2 = pointA.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != null) {
+                                point=n1;
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+                                    for (int n=1; n<=index2; n++){
+                                        pointA.set(n-1, "");
+                                    }
+                        Log.d("In index2", "" + index2 + " " + pointA);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        cursor.close();
+        return point;
+    }
+
     //считываем с БД имена тестов
     public List<String> getNameTest(){
         List<String> nameList = new ArrayList<>();
@@ -189,9 +246,9 @@ public class DBManager {
 
                         }
                         Log.d("For index1", "2. " + i+" index: "+ index);
-//                                    for (int n=0; n<=index2; n++){
-//                                        nameQ.set(n, "");
-//                                    }
+                                    for (int n=1; n<=index2; n++){
+                                        nameQ.set(n-1, "");
+                                    }
                         Log.d("In index2", "" + index2 + " " + nameQ);
                     }
                     nameT.set(index, "");
@@ -275,6 +332,7 @@ public class DBManager {
             Log.d("VHOD", ""+nameT.size());
         }
 
+        cursor.close();
         return variant;
     }
 
@@ -384,6 +442,59 @@ public class DBManager {
 
         Log.d("CORRECT", correct+"");
         return correct;
+    }
+
+    public String getUri(String name_question){
+        String uri=null;
+        Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
+        ArrayList<String> nameT=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
+            nameT.add(n);
+        }
+
+        ArrayList<String> uriArr=new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            String n =cursor.getString(cursor.getColumnIndex(Constants.COLUMN_URI));
+            uriArr.add(n);
+        }
+
+        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+//                        String i=nameT.get(d);
+            Log.d("VHOD", ""+i);
+            if (i != null) {
+                if (i.equals(name_question)) {
+                    int index = nameT.indexOf(i);
+                    for (String n1 : uriArr) {
+                        int index2 = uriArr.indexOf(n1);
+                        Log.d("In index1", "" + index + " "+nameT.size());
+                        Log.d("For index1", "1. " + n1+ " index: "+index2);
+                        if (index == index2) {
+
+                            if (n1 != null) {
+                                uri=n1;
+                            }
+
+                        }
+                        Log.d("For index1", "2. " + i+" index: "+ index);
+//                                    corVar.set(index2, "");
+//                                    for (int n=1; n<=index2; n++){
+//                                        uriArr.set(n-1, "");
+//                                    }
+                        Log.d("In index2", "" + index2);
+                    }
+                    nameT.set(index, "");
+                    for (int m=0; m<index; m++){
+                        nameT.set(m, "");
+                    }
+                }
+            }
+            Log.d("VHOD", ""+nameT.size());
+        }
+
+        return uri;
     }
 
     public List<String> getNQ(String name_test){
@@ -535,6 +646,21 @@ public class DBManager {
         ContentValues contentValues=new ContentValues();
         contentValues.put(Constants.COLUMN_CORRECT_VARIANT, cor_var2);
         database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_CORRECT_VARIANT+" = '"+cor_var1+"'", null);
+    }
+
+    public void updateImage(String uri1, String uri2){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_URI, uri2);
+        database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_URI+" = '"+uri1+"'", null);
+    }
+
+    public void updatePoints(String points1, String points2){
+        Log.d("up", points1+" "+points2);
+        Log.d("Success", "false");
+        boolean success = false;
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COLUMN_POINTS, points2);
+        database.update(Constants.TABLE_NAME, contentValues, Constants.COLUMN_POINTS+" = '"+points1+"'", null);
     }
 
     //delete in COLUMN_TEST_NAME
