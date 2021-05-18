@@ -78,7 +78,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     public static String text_question;//текст вопроса
     public int variant=0;//тип ответа 1-по вариантам, 2-точный ответ
     public String exactAnswerString;//точный ответ
-    public String points;//количество баллов
+    public String points="";//количество баллов
     public ArrayList<String> all_variants=new ArrayList<>();//для всех вариантов
     ArrayList<String> correct_variant=new ArrayList<>();//правильные варианты ответов
     Bitmap selectedImage;//путь до изображения
@@ -120,6 +120,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 //        firstLayout=findViewById(R.id.variantsLayout);
         textView=findViewById(R.id.textV);
         editText=findViewById(R.id.editCreate);
+        editText.setText("");
         check=findViewById(R.id.check);
         save=findViewById(R.id.saveCrate);
         delete_image=findViewById(R.id.deleteCreate);
@@ -128,30 +129,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
         imageView = findViewById(R.id.imageView);
         Button PickImage = findViewById(R.id.btnCreate);
 
-
-
-        if (ContextCompat.checkSelfPermission(TestCreate.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(TestCreate.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
-        }else {
-            manager.openDb();
-            uri=manager.getUri(SecondFragment.text);
-            manager.closeDb();
-            Log.d("ТУТ ПРОВЕРКА", uri+"");
-            if (uri!=null){
-                loadImages();
-            }
-        }
-
         manager.openDb();
-
-        //вывод из БД текста для вопроса
-        for (String ed_txt:manager.getTxt(SecondFragment.text)){
-            editText.setText(ed_txt);
-            Log.d("Text for quest", ed_txt+"");
-        }
-
-        //переменная, которая считывает текст для дальнейшей проверки для апдейта в методе save.setOnClickListener
-        pr_txt = editText.getText().toString();
 
         all_variants.clear();
         correct_variant.clear();
@@ -193,13 +171,30 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 }
             }if (all_var2==null){// в том случае, если вариант вопроса 2
                 if (cor_var2!=null){
-                    exactAnswer.setText(cor_var2);//вставляем в строку текст точного ответа
+                    String[] corVar=cor_var2.split("\\| ");
+                    for (String cor:corVar){//цикл для всех элементов массива
+                        exactAnswer.setText(cor);
+                    }
                 }
             }
+
+        //вывод из БД текста для вопроса
+        if (all_var2!=null || cor_var2!=null){
+            Log.d("Manager txt", manager.getTxt(SecondFragment.text)+"");
+            for (String ed_txt:manager.getTxt(SecondFragment.text)){
+                editText.setText(ed_txt);
+                Log.d("Text for quest", ed_txt+"");
+            }
+        }
+
+        //переменная, которая считывает текст для дальнейшей проверки для апдейта в методе save.setOnClickListener
+        pr_txt = editText.getText().toString();
+
         manager.closeDb();
 
         manager.openDb();
         variant=manager.getVar(SecondFragment.text);// получаем вариант вопроса из БД
+        Log.d("VAR infrant", variant+" and "+manager.getVar(SecondFragment.text)+"");
         manager.closeDb();
         savedVar=variant;
         Log.d("VAR", ""+savedVar);
@@ -220,14 +215,14 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             @Override
             public void onClick(View v) {
                 text_question = editText.getText().toString();//берём существующий текст
-                if (pr_txt!=null){//проверяем старый текст
-                    if (text_question!=null){//заменяем старый pr_txt на новый text_question
-                        Log.d("pr_txt and text_question", pr_txt+" "+text_question);
-                        manager.openDb();
-                        manager.updateTxt(pr_txt, text_question);
-                        manager.closeDb();
-                    }
-                }
+//                if (pr_txt!=null){//проверяем старый текст
+//                    if (text_question!=null){//заменяем старый pr_txt на новый text_question
+//                        Log.d("pr_txt and text_question", pr_txt+" "+text_question);
+//                        manager.openDb();
+//                        manager.updateTxt(null, text_question);
+//                        manager.closeDb();
+//                    }
+//                }
             }
         });
 
@@ -321,9 +316,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             }
         });
 
-
-
-
         PickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -379,6 +371,31 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 //            }
 //        });
 
+//        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+//        galleryIntent.setType("image/*, video/*");
+//        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(Intent.createChooser(galleryIntent, "Select File"), 101);
+//        }else {
+//            manager.openDb();
+//            uri=manager.getUri(SecondFragment.text);
+//            manager.closeDb();
+//            Log.d("ТУТ ПРОВЕРКА", uri+"");
+//            if (uri!=null){
+//                loadImages();
+//            }
+//        }
+
+        if (ContextCompat.checkSelfPermission(TestCreate.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(TestCreate.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
+        }else {
+            manager.openDb();
+            uri=manager.getUri(SecondFragment.text);
+            manager.closeDb();
+            Log.d("ТУТ ПРОВЕРКА", uri+"");
+            if (uri!=null){
+                loadImages();
+            }
+        }
     }
 
     public void loadImages(){
@@ -412,6 +429,9 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     public void onClick(View v) {
         all_var="";
         cor_var="";
+        if (variant==0){
+            variant=1;
+        }
         switch (v.getId()){
             //dialog_before_save
             case R.id.cancel:
@@ -423,13 +443,10 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 if (cor_var2==null && all_var2==null){
 //                    edPoints=dialog.findViewById(R.id.points);
 
-                    if (variant==0){
-                        variant=1;
-                    }
                     if (variant==2){
                         exactAnswer=findViewById(R.id.editExactAnswer);
                         exactAnswerString=exactAnswer.getText().toString();
-                        cor_var=exactAnswerString;//правильный вариант
+                        cor_var=exactAnswerString+"| ";//правильный вариант
                         //text_question текст вопроса
                         //variant вариант
                         //points баллы
@@ -438,6 +455,7 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                         }else {
                             uri=null;
                         }
+
                         Log.d("name_quest", SecondFragment.text+"");
                         Log.d("text_question", text_question+"");
                         Log.d("variant", variant+"");
@@ -507,15 +525,20 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("points", points+"");
                             Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
+                            if (pr_txt.equals("")){
+                                pr_txt=null;
+                            }
+                            manager.updateTxt(pr_txt, text_question);
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
+                            manager.updateVar(savedVar, variant);
                             manager.updateImage(savedUri, uri);
                             manager.updatePoints(savePoints, points);
                             manager.closeDb();
                         }if (variant==2){
                             exactAnswer=findViewById(R.id.editExactAnswer);
                             exactAnswerString=exactAnswer.getText().toString();
-                            cor_var=exactAnswerString;
+                            cor_var=exactAnswerString+"| ";
 
                             Log.d("name_quest", SecondFragment.text+"");
                             Log.d("text_question", text_question+"");
@@ -525,7 +548,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("points", points+"");
                             Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
+                            if (pr_txt.equals("")){
+                                pr_txt=null;
+                            }
+                            manager.updateTxt(pr_txt, text_question);
                             manager.updateCor_Var(cor_var2, cor_var);
+                            manager.updateVar(savedVar, variant);
                             manager.updateAll_Var(all_var2, null);
                             manager.updatePoints(savePoints, points);
                             manager.updateImage(savedUri, uri);
@@ -560,6 +588,10 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("points", points+"");
                             Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
+                            if (pr_txt.equals("")){
+                                pr_txt=null;
+                            }
+                            manager.updateTxt(pr_txt, text_question);
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
                             manager.updateVar(savedVar, variant);
@@ -575,10 +607,9 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 //                                cor_var+=var;
 //                                cor_var+="| ";
 //                            }
-
                             exactAnswer=findViewById(R.id.editExactAnswer);
                             exactAnswerString=exactAnswer.getText().toString();
-                            cor_var=exactAnswerString;
+                            cor_var=exactAnswerString+"| ";
 
 //                            for (String al:all_variants){
 //                                all_var+=al;
@@ -594,6 +625,10 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             Log.d("points", points+"");
                             Log.d("uri", savedUri+" update "+uri);
                             manager.openDb();
+                            if (pr_txt.equals("")){
+                                pr_txt=null;
+                            }
+                            manager.updateTxt(pr_txt, text_question);
                             manager.updateAll_Var(all_var2, all_var);
                             manager.updateCor_Var(cor_var2, cor_var);
                             manager.updateVar(savedVar, variant);

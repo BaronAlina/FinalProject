@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/PaleTurquoise">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="204dp"
+                android:layout_height="65dp"
+                android:text="Your result"
+                android:textSize="25dp">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In total "
+                        android:textSize="20dp">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="83dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20dp">
+
+                    </TextView>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="complete">
+
+                </Button>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/LightCyan">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/nameq"
+                    android:layout_width="205dp"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/points"
+                    android:layout_width="205dp"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp">
+
+                </TextView>
+                <!--        <ListView-->
+                <!--            android:id="@+id/listView"-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="wrap_content">-->
+
+                <!--        </ListView>-->
+                <!--        <ListView-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content">-->
+
+                <!--        </ListView>-->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</ScrollView>

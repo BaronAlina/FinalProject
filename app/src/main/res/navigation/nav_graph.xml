@@ -46,4 +46,12 @@
         tools:layout="@layout/content_main">
 
     </activity>
+
+    <activity
+        android:id="@+id/Result"
+        android:name="com.example.finalproject.Result"
+        android:label="@string/fifth_activity_label"
+        tools:layout="@layout/content_main">
+
+    </activity>
 </navigation>

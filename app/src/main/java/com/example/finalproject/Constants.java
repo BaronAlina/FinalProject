@@ -2,7 +2,7 @@ package com.example.finalproject;
 
 public class Constants {
     public static final String DATABASE_NAME = "test.db";
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
     public static final String TABLE_NAME = "question";
 
     //названия столбцов

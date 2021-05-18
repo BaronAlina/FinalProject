@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class Test extends Activity {
 
     TextView txt;
-    public static ListView listView;
+    ListView listView;
     ArrayList<String> arrayList=new ArrayList<>();
     ArrayAdapter adapter;
 

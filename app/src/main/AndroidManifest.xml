@@ -3,6 +3,7 @@
     package="com.example.finalproject">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="com.google.android.apps.photos.permission.GOOGLE_PHOTOS"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -44,6 +45,15 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="FourthActivity"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Result"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="FifthActivity"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

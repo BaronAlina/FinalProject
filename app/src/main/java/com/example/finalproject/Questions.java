@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -32,14 +33,16 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
     LinearLayout layout, layout2, layoutBasic, linLayout;
     Uri imageUri;
     Bitmap selectedImage;
-    int index=1, variant;
+    int index=1, variant, check=0;
     ArrayList<String> nameQ=new ArrayList<>();
     ArrayList<String> arr=new ArrayList<>();
     ArrayList<String> arr2=new ArrayList<>();
-    String all_var;
+    ArrayList<String> answers=new ArrayList<>();
+    String all_var, answer;
     View view;
     LayoutInflater ltInflater;
     CheckBox checkBox;
+    String first;
 
     String uri, text, variants;
 
@@ -52,10 +55,12 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
         button.setOnClickListener(this);
         imageView=findViewById(R.id.imageView);
         textView=findViewById(R.id.textView);
-        editText=findViewById(R.id.edText);
+        editText=findViewById(R.id.edit);
         layout=findViewById(R.id.layout);
         layout2=findViewById(R.id.layout2);
         layoutBasic=findViewById(R.id.layoutBasic);
+//        layoutBasic.removeView(layout);
+//        layoutBasic.removeView(layout2);
         manager=new DBManager(this);
         manager.openDb();
 
@@ -88,9 +93,9 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
         }
         manager.closeDb();
 
-        String first=arr2.get(0);
+        first=nameQ.get(0);
         Log.d("FIRST", first+"");
-        arr2.remove(0);
+//        arr2.remove(0);
         manager.openDb();
         uri=manager.getUri(first);
         Log.d("URI", uri+"");
@@ -133,53 +138,140 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
         }if (variant==2){
             layoutBasic.removeView(layout);
 //            layoutBasic.addView(layout2);
+//            layoutBasic.addView(layout2);
         }
         manager.closeDb();
     }
 
     @Override
     public void onClick(View v) {
-        name=nameQ.get(index);
+        Log.d("index_and_nameQ.size", index+" "+nameQ.size());
+        imageView.setImageResource(0);
         manager.openDb();
-        uri=manager.getUri(name);
-        if (uri!=null){
-            imageUri= Uri.parse(uri);
-            try {
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                selectedImage = BitmapFactory.decodeStream(imageStream);
-                imageView.setImageBitmap(selectedImage);
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
-            }
-        }
-        for (String ed_text:manager.getTxt(name)){
-            textView.setText(ed_text);
-        }
-        variant=manager.getVar(name);
-        if (variant==1){
-            layoutBasic.removeView(layout2);
-            all_var=manager.getAll_Var(name);
-            if (all_var!=null){
-                String[] variants=all_var.split("\\| ");
-                for (String var:variants){
-                    ltInflater = getLayoutInflater();
-                    view = ltInflater.inflate(R.layout.edit, null, false);
-                    checkBox=view.findViewById(R.id.checkbox2);
-                    checkBox.setOnCheckedChangeListener(this);
-                    textCreate=view.findViewById(R.id.textCreate);
-                    textCreate.setText(var);
-                    linLayout=findViewById(R.id.layout);
-                    linLayout.addView(view);
+//        if ((variant=manager.getVar(first))==1){
+//            if (layoutBasic.getL){
+//                Log.d("Viser", (layout2.getVisibility()==View.VISIBLE)+"");
+//            }else {
+//                layoutBasic.addView(layout2);
+//            }
+//        }if ((variant=manager.getVar(first))==2){
+//            if (layout.getVisibility()==View.VISIBLE){
+//                Log.d("Viser", (layout.getVisibility()==View.VISIBLE)+"");
+//            }else {
+//                layoutBasic.addView(layout);
+//            }
+//        }
+        if (index==nameQ.size()){
+            if (index-1>=0){
+                first=nameQ.get(index-1);
+                Log.d("first", first+" "+(index-1));
+                if ((manager.getVar(first))==2){
+                    Log.d("first variant", manager.getVar(first)+"");
+                    answer=editText.getText().toString();
+                    Log.d("first answer", answer+"");
+                    answers.add(first+"|"+answer);
                 }
             }
-        }if (variant==2){
-            layoutBasic.removeView(layout);
+            Intent intent=new Intent();
+            intent.putExtra("Array answers", answers);
+            Log.d("putExtra", answers+"");
+            intent.setClass(Questions.this, Result.class);
+            startActivity(intent);
+            index=0;
+        }else {
+            check=0;
+            if (index-1>=0){
+                first=nameQ.get(index-1);
+                Log.d("first", first+" "+(index-1));
+                if ((manager.getVar(first))==2){
+                    Log.d("first variant", manager.getVar(first)+"");
+                    answer=editText.getText().toString();
+                    Log.d("first answer", answer+"");
+                    if (!(answer.equals(""))){
+                        answers.add(first+"|"+answer);
+                    }
+
+                }
+            }
+            editText.setText("");
+            editText.setHint("Write your answer");
+            answer="";
+//        layoutBasic.removeView(layout2);
+//        layoutBasic.removeView(layout);
+            name=nameQ.get(index-1);
+            Log.d("VAR", index+"");
+            if ((variant=manager.getVar(name))==1){
+                Log.d("maheg", (variant=manager.getVar(name))+"");
+                Log.d("Viser1", ((variant=manager.getVar(name))==1)+"");
+                layoutBasic.addView(layout2);
+                linLayout.removeAllViews();
+            }if ((variant=manager.getVar(name))==2){
+                Log.d("maheg", (variant=manager.getVar(name))+"");
+                Log.d("Viser2", ((variant=manager.getVar(name))==2)+"");
+                layoutBasic.addView(layout);
+            }
+            name=nameQ.get(index);
+
+            uri=manager.getUri(name);
+            if (uri!=null){
+                imageUri= Uri.parse(uri);
+                try {
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    imageView.setImageBitmap(selectedImage);
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+            for (String ed_text:manager.getTxt(name)){
+                textView.setText(ed_text);
+            }
+            variant=manager.getVar(name);
+            Log.d("tig", index+" "+variant+" "+name);
+            if (variant==1){
+                layoutBasic.removeView(layout2);
+                all_var=manager.getAll_Var(name);
+                Log.d("all_var23", all_var+"");
+                if (all_var!=null){
+                    String[] variants=all_var.split("\\| ");
+                    for (String var:variants){
+                        ltInflater = getLayoutInflater();
+                        view = ltInflater.inflate(R.layout.edit, null, false);
+                        checkBox=view.findViewById(R.id.checkbox2);
+                        checkBox.setOnCheckedChangeListener(this);
+                        textCreate=view.findViewById(R.id.textCreate);
+                        textCreate.setText(var);
+                        linLayout=findViewById(R.id.layout);
+                        linLayout.addView(view);
+                    }
+                }
+//            variant=0;
+            }if (variant==2){
+                layoutBasic.removeView(layout);
+//            layoutBasic.addView(layout2);
+//            variant=0;
+            }
+            index++;
         }
-        index++;
+
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        answer="";
+        switch (buttonView.getId()){
+            case R.id.checkbox2:
+                checkBox=(CheckBox) buttonView;
+                view=(View)checkBox.getParent();
+                textCreate=view.findViewById(R.id.textCreate);
+                if (isChecked){
+                    answer=textCreate.getText().toString();
+                    answers.add(first+"|"+answer);
+                }else {
+                    answer=textCreate.getText().toString();
+                    answers.remove(first+"|"+answer);
+                }
+                Log.d("a_N_s_W_e_R", answers+"");
+        }
     }
 }

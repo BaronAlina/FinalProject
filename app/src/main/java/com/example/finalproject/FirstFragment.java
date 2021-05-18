@@ -211,7 +211,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                 layout.removeView(textView);
                 String del=textView.getText().toString();
                 manager.openDb();
-                manager.delete(del);
+                manager.deleteTest(del);
 //                manager.deleteQ(SecondFragment.text);
 //                manager.deleteTextQ(TestCreate.text_question);
                 manager.closeDb();
