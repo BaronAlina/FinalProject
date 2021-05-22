@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -101,6 +104,10 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_layout);
+        String title="Create your test";
+        SpannableString s = new SpannableString(title);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.Teal)), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(s);
         manager=new DBManager(this);
         exactAnswer=findViewById(R.id.editExactAnswer);
         layoutCreate=findViewById(R.id.beforeRemove);
