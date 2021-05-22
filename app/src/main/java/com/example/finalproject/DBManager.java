@@ -45,46 +45,12 @@ public class DBManager {
         database.insert(Constants.TABLE_NAME, null, contentValues);
     }
 
-    //пишем в БД
-//    public void insertToDb(String name_test, String name_question, String text_question, int variant, String correct_variant, String all_variant, String points, String uri){
-//        ContentValues contentValues=new ContentValues();
-//        contentValues.put(Constants.COLUMN_TEST_NAME, name_test);
-//        contentValues.put(Constants.COLUMN_NAME_QUESTION, name_question);
-//        contentValues.put(Constants.COLUMN_TEXT_QUESTION, text_question);
-//        contentValues.put(Constants.COLUMN_VARIANT, variant);
-//        contentValues.put(Constants.COLUMN_CORRECT_VARIANT, correct_variant);
-//        contentValues.put(Constants.COLUMN_ALL_VARIANTS, all_variant);
-//        contentValues.put(Constants.COLUMN_POINTS, points);
-//        contentValues.put(Constants.COLUMN_URI, uri);
-//        database.insert(Constants.TABLE_NAME, null, contentValues);
-//    }
-
     public void insertSettings(String name_test, String name_question /*, int variant, String correct_variant, String all_variant, String points, String uri*/){
         ContentValues contentValues=new ContentValues();
         contentValues.put(Constants.COLUMN_TEST_NAME, name_test);
         contentValues.put(Constants.COLUMN_NAME_QUESTION, name_question);
-//        contentValues.put(Constants.COLUMN_VARIANT, variant);
-//        contentValues.put(Constants.COLUMN_CORRECT_VARIANT, correct_variant);
-//        contentValues.put(Constants.COLUMN_ALL_VARIANTS, all_variant);
-//        contentValues.put(Constants.COLUMN_POINTS, points);
-//        contentValues.put(Constants.COLUMN_URI, uri);
         database.insert(Constants.TABLE_NAME, null, contentValues);
     }
-
-
-
-    //считываем с БД имена вопросов
-//    public List<String> getFromDb(){
-//        List<String> tempList = new ArrayList<>();
-//        Cursor cursor = database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
-//
-//        while (cursor.moveToNext()){
-//            String name_question = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME_QUESTION));
-//            tempList.add(name_question);
-//        }
-//        cursor.close();
-//        return tempList;
-//    }
 
     public String getPoints(String name_question){
         String point =null;
@@ -99,8 +65,7 @@ public class DBManager {
 
         ArrayList<String> pointA = new ArrayList<>();
 
-        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
-//                        String i=nameT.get(d);
+        for (String i : nameT) {
             Log.d("pVHOD", ""+i);
             if (i != null) {
                 if (i.equals(name_question)) {
@@ -174,22 +139,6 @@ public class DBManager {
             i=1;
         }
 
-//        for (int i=0; i<nameList.size()-1; i++){
-//            String nL1=nameList.get(i);
-//            if (nL1==null){
-//                nL1="";
-//            }
-//            for (int i1=1; i1<nameList.size(); i1++) {
-//                String nL2=nameList.get(i1);
-//                if (nL2==null){
-//                    nL2="";
-//                }
-//                if (nL1.equals(nL2)){
-//                    nameList.remove(i1);
-//                }
-//            }
-//        }
-
         cursor.close();
         return arr2;
     }
@@ -221,7 +170,7 @@ public class DBManager {
 
         ArrayList<String> nameQ = new ArrayList<>();
 
-        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
+        for (String i : nameT) {
 //                        String i=nameT.get(d);
             Log.d("txtVHOD", ""+i);
             if (i != null) {
@@ -268,7 +217,6 @@ public class DBManager {
 
     public int getVar(String name_question){
         int variant=0;
-//        List<Integer> variants=new ArrayList<>();
         Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
 
         ArrayList<String > nameT=new ArrayList<>();
@@ -279,14 +227,6 @@ public class DBManager {
         }
 
         ArrayList<Integer> variants = new ArrayList<>();
-//        variants.clear();
-//        cursor.moveToFirst();
-//        while (cursor.moveToNext()) {
-//            Log.d("GETNQ", "start");
-//            int i1 = cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_VARIANT));
-//            variants.add(i1);
-//            Log.d("GETNQ", "final");
-//        }
 
         for (String i : nameT) {
             Log.d("vVHOD", ""+i);
@@ -315,9 +255,6 @@ public class DBManager {
 
                         }
                         Log.d("vFor index1", "2. " + i+" index: "+ index);
-//                        if (index2!=0){
-//                            variants.set(index2, 0);
-//                        }
                         variants.set(0, 0);
                                     for (int n=1; n<=index2; n++){
                                         Log.d("vNull for ", n-1+" index");
@@ -351,8 +288,7 @@ public class DBManager {
         ArrayList<String> allVar=new ArrayList<>();
 
 
-        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
-//                        String i=nameT.get(d);
+        for (String i : nameT) {
             Log.d("aVHOD", ""+i);
             if (i != null) {
                 if (i.equals(name_question)) {
@@ -375,10 +311,6 @@ public class DBManager {
 
                         }
                         Log.d("aFor index1", "2. " + i+" index: "+ index);
-//                                    nameQ.set(index2, "");
-//                                    for (int n=1; n<=index2; n++){
-//                                        allVar.set(n-1, "");
-//                                    }
                         Log.d("aIn index2", "" + index2);
                     }
                     nameT.set(index, "");
@@ -411,8 +343,7 @@ public class DBManager {
             corVar.add(n);
         }
 
-        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
-//                        String i=nameT.get(d);
+        for (String i : nameT) {
             Log.d("cVHOD", ""+i);
             if (i != null) {
                 if (i.equals(name_question)) {
@@ -429,10 +360,6 @@ public class DBManager {
 
                         }
                         Log.d("cFor index1", "2. " + i+" index: "+ index);
-//                                    corVar.set(index2, "");
-//                                    for (int n=1; n<=index2; n++){
-//                                        corVar.set(n, "");
-//                                    }
                         Log.d("cIn index2", "" + index2);
                     }
                     nameT.set(index, "");
@@ -465,8 +392,7 @@ public class DBManager {
             uriArr.add(n);
         }
 
-        for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
-//                        String i=nameT.get(d);
+        for (String i : nameT) {
             Log.d("uVHOD", ""+i);
             if (i != null) {
                 if (i.equals(name_question)) {
@@ -483,10 +409,6 @@ public class DBManager {
 
                         }
                         Log.d("uFor index1", "2. " + i+" index: "+ index);
-//                                    corVar.set(index2, "");
-//                                    for (int n=1; n<=index2; n++){
-//                                        uriArr.set(n-1, "");
-//                                    }
                         Log.d("uIn index2", "" + index2);
                     }
                     nameT.set(index, "");
@@ -505,27 +427,8 @@ public class DBManager {
         List<String> nameListF=new ArrayList<>();
         List<String> nameList = new ArrayList<>();
         Cursor cursor=database.query(Constants.TABLE_NAME, null, null, null, null, null, null);
-//        List<String> nameT = new ArrayList<>();
         ArrayList<String > nameT=new ArrayList<>();
         nameT.clear();
-        String[] nameTest= new String[1000];
-        String[] nameQuest=new String[1000];
-//        String [] nameT;
-//        while (cursor.moveToNext()){
-//            String name_testC = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_TEST_NAME));
-//            if (name_testC==null){
-//                name_testC="";
-//            }
-////            nameList.add(name_testC);
-//            Log.d("PROVERKA", "start "+name_testC);
-//            if (name_testC.equals(name_test)){
-//                Log.d("PROVERKA", "start");
-//                Cursor cur=cursor;
-//                String name_question = "";
-//                int c=cursor.getPosition();
-                //
-
-
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             String n = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_TEST_NAME));
@@ -542,8 +445,7 @@ public class DBManager {
             nameQ.add(i1);
             Log.d("qGETNQ", "final");
         }
-                    for (String i : nameT/*int d=0; d<nameT.size(); d++*/) {
-//                        String i=nameT.get(d);
+                    for (String i : nameT) {
                         Log.d("qVHOD", ""+i);
                         if (i != null) {
                             if (i.equals(name_test)) {
@@ -560,10 +462,6 @@ public class DBManager {
 
                                     }
                                     Log.d("qFor index1", "2. " + i+" index: "+ index);
-//                                    nameQ.set(index2, "");
-//                                    for (int n=0; n<index2; n++){
-//                                        nameQ.set(n, "");
-//                                    }
                                     Log.d("qIn index2", "" + index2);
                                 }
                                 nameT.set(index, "");
@@ -575,29 +473,10 @@ public class DBManager {
                         Log.d("qVHOD", ""+nameT.size());
                     }
 
-
-
-//                while (cursor.moveToNext()){
-//                    name_question = cur.getString(cur.getColumnIndexOrThrow(Constants.COLUMN_NAME_QUESTION));
-//                    if (name_question!=null){
-//                        nameList.add(name_question);
-//                    }
-//                }
-//                Log.d("PROVERKA", "finish" + name_question);
-//            }
-//            Log.d("PROVERKA", "finish "+name_test);
-//        }
-
-
         cursor.close();
         return nameList;
 
     }
-
-//    //удаляем из БД имена тестов
-//    public void deleteTest(String name_test){
-//        database.delete(Constants.TABLE_NAME, Constants.COLUMN_TEST_NAME + " = ?", new String[] {String.valueOf(name_test)});
-//    }
 
     //удаляем из БД имена вопросов
     public void deleteQuestion(String name_question){

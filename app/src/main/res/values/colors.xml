@@ -8,4 +8,11 @@
     <color name="PaleTurquoise">#AFEEEE</color>
     <color name="Aqua">#00FFFF</color>
     <color name="Turquoise">#40E0D0</color>
+    <color name="LightSteelBlue">#B0C4DE</color>
+    <color name="AliceBlue">#F0F8FF</color>
+    <color name="DodgerBlue">#1E90FF</color>
+    <color name="Blue">#0000FF</color>
+    <color name="MediumSlateBlue">#7B68EE</color>
+    <color name="MediumTurquoise">#48D1CC</color>
+    <color name="Teal">#008080</color>
 </resources>

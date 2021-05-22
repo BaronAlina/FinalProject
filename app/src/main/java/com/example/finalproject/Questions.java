@@ -44,7 +44,7 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
     CheckBox checkBox;
     String first;
 
-    String uri, text, variants;
+    String uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +55,12 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
         button.setOnClickListener(this);
         imageView=findViewById(R.id.imageView);
         textView=findViewById(R.id.textView);
+        textView.setBackgroundResource(R.drawable.ugl);
         editText=findViewById(R.id.edit);
+        editText.setBackgroundResource(R.drawable.ugl);
         layout=findViewById(R.id.layout);
         layout2=findViewById(R.id.layout2);
         layoutBasic=findViewById(R.id.layoutBasic);
-//        layoutBasic.removeView(layout);
-//        layoutBasic.removeView(layout2);
         manager=new DBManager(this);
         manager.openDb();
 
@@ -137,8 +137,6 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
             }
         }if (variant==2){
             layoutBasic.removeView(layout);
-//            layoutBasic.addView(layout2);
-//            layoutBasic.addView(layout2);
         }
         manager.closeDb();
     }
@@ -148,19 +146,6 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
         Log.d("index_and_nameQ.size", index+" "+nameQ.size());
         imageView.setImageResource(0);
         manager.openDb();
-//        if ((variant=manager.getVar(first))==1){
-//            if (layoutBasic.getL){
-//                Log.d("Viser", (layout2.getVisibility()==View.VISIBLE)+"");
-//            }else {
-//                layoutBasic.addView(layout2);
-//            }
-//        }if ((variant=manager.getVar(first))==2){
-//            if (layout.getVisibility()==View.VISIBLE){
-//                Log.d("Viser", (layout.getVisibility()==View.VISIBLE)+"");
-//            }else {
-//                layoutBasic.addView(layout);
-//            }
-//        }
         if (index==nameQ.size()){
             if (index-1>=0){
                 first=nameQ.get(index-1);
@@ -196,8 +181,6 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
             editText.setText("");
             editText.setHint("Write your answer");
             answer="";
-//        layoutBasic.removeView(layout2);
-//        layoutBasic.removeView(layout);
             name=nameQ.get(index-1);
             Log.d("VAR", index+"");
             if ((variant=manager.getVar(name))==1){
@@ -245,11 +228,8 @@ public class Questions extends Activity implements View.OnClickListener, Compoun
                         linLayout.addView(view);
                     }
                 }
-//            variant=0;
             }if (variant==2){
                 layoutBasic.removeView(layout);
-//            layoutBasic.addView(layout2);
-//            variant=0;
             }
             index++;
         }

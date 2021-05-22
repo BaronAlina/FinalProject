@@ -26,13 +26,11 @@ import java.util.ArrayList;
 
 public class Test extends Activity {
 
-    TextView txt;
     ListView listView;
     ArrayList<String> arrayList=new ArrayList<>();
     ArrayAdapter adapter;
 
     private DBManager manager;
-    Button forDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -48,17 +48,16 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     Context context;
 
     final int Pick_image=1;
-    EditText editT, edittext, edPoints, editText, exactAnswer;
-    String answer="", answer2="", edit_variants, variants;
+    EditText edPoints, editText, exactAnswer;
+    String answer="";
     Button variants_question, save, delete_image, add_variants, save_variants;
     TextView textView, check;
 
-    int picture=0, firstString;
+    int picture=0;
     LinearLayout layoutCreate,
             removableLayout,
-            changeLayout, firstLayout, linLayout, forPoint, removeForPoint;
+            changeLayout, linLayout;
     final int DELETE=1;
-    int forIdBox=0, forIdBox2=0;
     LayoutInflater ltInflater;
 
 
@@ -90,7 +89,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
 
     //для диалога
     Dialog dialog;
-    EditText edDialog;
     Button cancel, saveAll;
     String pr_txt;
 
@@ -103,8 +101,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_layout);
-//        cor_var="";
-//        all_var="";
         manager=new DBManager(this);
         exactAnswer=findViewById(R.id.editExactAnswer);
         layoutCreate=findViewById(R.id.beforeRemove);
@@ -114,10 +110,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
         layoutCreate.removeView(removableLayout);
         layoutCreate.addView(removableLayout);
         variants_question=findViewById(R.id.btnCreate2);
-//        removeForPoint=findViewById(R.id.removeForPoint);
-//        forPoint=findViewById(R.id.forPoint);
-//        removeForPoint.removeView(forPoint);
-//        firstLayout=findViewById(R.id.variantsLayout);
         textView=findViewById(R.id.textV);
         editText=findViewById(R.id.editCreate);
         editText.setText("");
@@ -215,14 +207,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             @Override
             public void onClick(View v) {
                 text_question = editText.getText().toString();//берём существующий текст
-//                if (pr_txt!=null){//проверяем старый текст
-//                    if (text_question!=null){//заменяем старый pr_txt на новый text_question
-//                        Log.d("pr_txt and text_question", pr_txt+" "+text_question);
-//                        manager.openDb();
-//                        manager.updateTxt(null, text_question);
-//                        manager.closeDb();
-//                    }
-//                }
             }
         });
 
@@ -236,24 +220,11 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                         layoutCreate.removeView(changeLayout);
                         layoutCreate.addView(removableLayout);
                     }else {
-//                        if (variant==0){//при первом посещении, когда ещё ничего не было сохранено, при попытке изменить вариант, выполнится следующее условие
-//                            nul=variant;
-//                            variants_question.setText("variants");
-//                            variant=1;//теперь вариант равен 1, а изначально был равен
-//                            layoutCreate.removeView(changeLayout);
-//                            layoutCreate.addView(removableLayout);
-////                            manager.openDb();
-//                        }else {
                             variant1=variant;
                             variants_question.setText("variants");
                             variant=1;
                             layoutCreate.removeView(changeLayout);
                             layoutCreate.addView(removableLayout);
-//                            manager.openDb();
-//                            manager.updateVar(variant1, variant);
-//                            Log.d("UPDATE", variant1+" "+variant);
-//                            manager.closeDb();
-//                        }
                     }
                 }else {
                     if (nul==0){
@@ -274,10 +245,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             variant=2;
                             layoutCreate.removeView(removableLayout);
                             layoutCreate.addView(changeLayout);
-//                            manager.openDb();
-//                            manager.updateVar(variant1, variant);
-//                            Log.d("UPDATE", variant1+" "+variant);
-//                            manager.closeDb();
                         }
                     }
                 }
@@ -296,23 +263,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 createAdd.setOnClickListener(TestCreate.this);
                 dialogCreate.setCancelable(false);
                 dialogCreate.show();
-
-//                ltInflater = getLayoutInflater();
-//                context=ltInflater.getContext();
-//                view = ltInflater.inflate(R.layout.edit, null, false);
-//                view.setOnCreateContextMenuListener(TestCreate.this);
-//                view.setOnClickListener(TestCreate.this);
-//                checkBox=view.findViewById(R.id.checkbox2);
-//                checkBox.setOnClickListener(TestCreate.this);
-//                checkBox.setOnCheckedChangeListener(TestCreate.this);
-//                editT=view.findViewById(R.id.editT);
-//                editT.setOnKeyListener(TestCreate.this);
-
-//                linLayout = findViewById(R.id.removable);
-//                linLayout.setOnClickListener(TestCreate.this);
-//                linLayout.addView(view);
-//                EditText editText=view.findViewById(R.id.edit);
-
             }
         });
 
@@ -328,7 +278,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             @Override
             public void onClick(View v) {
                 if (picture!=0){
-//                    imageView.getResources();
                     uri=imageView.getResources().toString();
                     manager.openDb();
                     manager.updateImage(uri, "");
@@ -343,7 +292,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
         save_variants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                removeForPoint.addView(forPoint);
                 dialog=new Dialog(TestCreate.this);
                 dialog.setContentView(R.layout.dialog_befor_save);
                 edPoints=dialog.findViewById(R.id.points);
@@ -361,29 +309,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 dialog.show();
             }
         });
-
-//        saveAll=findViewById(R.id.btnSaveAll);
-//        saveAll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                exactAnswerString=exactAnswer.getText().toString();
-//                points=edPoints.getText().toString();
-//            }
-//        });
-
-//        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
-//        galleryIntent.setType("image/*, video/*");
-//        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(Intent.createChooser(galleryIntent, "Select File"), 101);
-//        }else {
-//            manager.openDb();
-//            uri=manager.getUri(SecondFragment.text);
-//            manager.closeDb();
-//            Log.d("ТУТ ПРОВЕРКА", uri+"");
-//            if (uri!=null){
-//                loadImages();
-//            }
-//        }
 
         if (ContextCompat.checkSelfPermission(TestCreate.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(TestCreate.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
@@ -419,12 +344,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
         manager.closeDb();
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        manager.openDb();
-//    }
-
     @Override
     public void onClick(View v) {
         all_var="";
@@ -433,7 +352,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
             variant=1;
         }
         switch (v.getId()){
-            //dialog_before_save
             case R.id.cancel:
                 dialog.dismiss();
                 break;
@@ -441,7 +359,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 Log.d("SAVE", cor_var2+" "+all_var2);
                 points=edPoints.getText().toString();
                 if (cor_var2==null && all_var2==null){
-//                    edPoints=dialog.findViewById(R.id.points);
 
                     if (variant==2){
                         exactAnswer=findViewById(R.id.editExactAnswer);
@@ -472,16 +389,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             cor_var+=cr;
                             cor_var+="| ";
                         }
-//                    cor_var= correct_variant.toString();
-//                    cor_var+="";
                         Log.d("MASS_All_VARIANTS", all_variants+"");
                         for (String al:all_variants){
                             Log.d("all_var", all_var);
                             all_var+=al;
                             all_var+="| ";
                         }
-//                    all_var=all_variants.toString();
-//                    all_var+="";
                         uri="";
                         if (imageUri!=null){
                             uri=imageUri.toString();
@@ -557,20 +470,12 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             manager.updateAll_Var(all_var2, null);
                             manager.updatePoints(savePoints, points);
                             manager.updateImage(savedUri, uri);
-//                            manager.updateTxt(pr_txt, text_question);
                             manager.closeDb();
                         }
                         dialog.dismiss();
                         Toast.makeText(this, "The properties of the question are saved, you can return to the main page", Toast.LENGTH_LONG).show();
                     }else {
                         if (variant==1){
-//                            String[] corVar=cor_var2.split("\\| ");
-//                            for (String str:corVar){
-//                                correct_variant.remove(str);
-//                            }for (String var:correct_variant){
-//                                cor_var+=var;
-//                                cor_var+="| ";
-//                            }
                             for (String cr:correct_variant){
                                 cor_var+=cr;
                                 cor_var+="| ";
@@ -602,19 +507,9 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             dialog.dismiss();
                             Toast.makeText(this, "The properties of the question are saved, you can return to the main page", Toast.LENGTH_LONG).show();
                         }if (variant==2){
-//                            correct_variant.remove(cor_var2);
-//                            for (String var:correct_variant){
-//                                cor_var+=var;
-//                                cor_var+="| ";
-//                            }
                             exactAnswer=findViewById(R.id.editExactAnswer);
                             exactAnswerString=exactAnswer.getText().toString();
                             cor_var=exactAnswerString+"| ";
-
-//                            for (String al:all_variants){
-//                                all_var+=al;
-//                                all_var+="| ";
-//                            }
                             all_var=null;
 
                             Log.d("name_quest", SecondFragment.text+"");
@@ -634,7 +529,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                             manager.updateVar(savedVar, variant);
                             manager.updateImage(savedUri, uri);
                             manager.updatePoints(savePoints, points);
-//                            manager.updateTxt(pr_txt, text_question);
                             manager.closeDb();
                             dialog.dismiss();
                             Toast.makeText(this, "The properties of the question are saved, you can return to the main page", Toast.LENGTH_LONG).show();
@@ -642,7 +536,6 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                     }
                 }
                 break;
-            //dialog_for_create
             case R.id.createCancel:
                 dialogCreate.dismiss();
                 break;
@@ -662,59 +555,14 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                 dialogCreate.dismiss();
                 break;
         }
-//        Log.d("PROVERKA", "start");
-//        switch (v.getId()){
-////            case R.id.removable:
-////                check.setText("+");
-////                break;
-//            case R.id.text:
-//                view=v;
-//                editT=view.findViewById(R.id.editT);
-//            default:
-//                editLayout=(LinearLayout) v;
-//                editT=editLayout.findViewById(R.id.editT);
-////                checkBox=editLayout.findViewById(R.id.checkbox2);
-//                if (answer.equals("")){
-//                    answer=editT.getText().toString();
-//                    correct_variant.add(answer);
-//                    check.setText(answer);
-//                    forIdBox2++;
-//                }else {
-//                    correct_variant.remove(answer);
-//                    check.setText("");
-//                    answer="";
-//                    forIdBox2--;
-//                }
-//        }
-//        Log.d("PROVERKA", "finish");
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()){
-//            case R.id.checkbox:
-//                edittext=findViewById(R.id.edittext);
-//                answer2=edittext.getText().toString();
-//                if (forIdBox==0){
-//                    correct_variant.add(answer2);
-//                    check.setText(answer2);
-//                    forIdBox++;
-//                }else {
-//                    correct_variant.remove(answer2);
-//                    check.setText("");
-//                    forIdBox--;
-//                }
-//                break;
             case R.id.checkbox2:
                 checkBox=(CheckBox) buttonView;
                 view=(View)checkBox.getParent();
-//                onClick(view);
-//                view.callOnClick();
-//                context=view.getContext();
-//                context=view.getContext();
-//                editT=new EditText(context);
-//                view=ltInflater.inflate(R.layout.edit, null, false);
-//                editT=view.findViewById(R.id.editT);
                 textCreate=view.findViewById(R.id.textCreate);
                 String sravnenie=textCreate.getText().toString();
                 if (answer.equals("")){
@@ -731,33 +579,9 @@ public class TestCreate extends AppCompatActivity implements CompoundButton.OnCh
                         check.setText(answer);
                     }
                 }
-//                if (answer!="" && answer.equals(sravnenie)){
-//                    correct_variant.remove(answer);
-//                    check.setText("");
-//                    answer="";
-//                }if (answer!="" && answer!=sravnenie){
-//                    correct_variant.remove(answer);
-//                    answer=textCreate.getText().toString();
-//                    correct_variant.add(answer);
-//                    check.setText(answer);
-//            }
                 break;
         }
     }
-
-//    @Override
-//    public boolean onKey(View v, int keyCode, KeyEvent event) {
-//        if (event.getAction()==KeyEvent.ACTION_DOWN && (keyCode==KeyEvent.KEYCODE_ENTER)){
-//            String random;
-//            view=v;
-//            editT=view.findViewById(R.id.editT);
-//            random=editT.getText().toString();
-//            all_variants.add(random);
-//            check.setText("");
-//            check.setText(random);
-//        }
-//        return false;
-//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

@@ -21,7 +21,7 @@
             android:layout_marginLeft="230dp"
             android:text="Save and next"
             android:textAllCaps="false"
-            android:textSize="20dp">
+            android:textSize="15dp">
 
         </Button>
 
@@ -41,11 +41,11 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="197dp"
+            android:layout_width="263dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginRight="50dp"
             android:background="@color/LightCyan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"

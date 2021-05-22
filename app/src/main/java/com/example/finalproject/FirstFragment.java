@@ -38,7 +38,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
     Context context;
     Dialog dialog;
     EditText editText;
-    Button button, button1, forTest;
+    Button button, button1;
     ArrayList<TextView> arrayList;
     DBManager manager;
 
@@ -50,8 +50,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         fab.setOnClickListener(this);
         dialog=new Dialog(context);
         arrayList=new ArrayList<>();
-//        forTest=layout.findViewById(R.id.button);
-//        forTest.setOnClickListener(this);
         manager=new DBManager(context);
         manager.openDb();
         ArrayList<String> arr=new ArrayList<>();
@@ -94,20 +92,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         return layout;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        manager.openDb();
-//        textView=new TextView(context);
-//        for (String name:manager.getFromDb()) {
-//            textView.append(name);
-//            textView.append("\n");
-//            textView.setTextSize(25);
-//            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-//            layout.addView(textView);
-//        }
-//    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -135,9 +119,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                 textView.setOnClickListener(this);
                 arrayList.add(textView);
                 layout.addView(textView);
-//                manager.openDb();
-//                manager.insertNameTest(text);
-//                manager.closeDb();
                 dialog.dismiss();
                 break;
             case R.id.btn:
@@ -212,8 +193,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                 String del=textView.getText().toString();
                 manager.openDb();
                 manager.deleteTest(del);
-//                manager.deleteQ(SecondFragment.text);
-//                manager.deleteTextQ(TestCreate.text_question);
                 manager.closeDb();
                 break;
         }

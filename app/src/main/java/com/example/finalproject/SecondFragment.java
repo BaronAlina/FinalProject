@@ -81,7 +81,6 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                     textView=new TextView(context);
                     number_of_questions++;
                     textView.setText(number_of_questions + ". " + name);
-//            textView.append("\n");
                     textView.setTextSize(25);
                     textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
                     textView.setOnCreateContextMenuListener(SecondFragment.this);
@@ -101,10 +100,6 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.fab:
                 dialog=new Dialog(context);
-//                dialog=new Dialog(context);
-//                if (dialog==null){
-//                    break;
-//                }
                 dialog.setContentView(R.layout.dialog_layout2);
                 editText=dialog.findViewById(R.id.edText2);
                 button=dialog.findViewById(R.id.btn_2);
@@ -127,9 +122,6 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                 if (text!=null){
                     manager.openDb();
                     manager.insertSettings(FirstFragment.text, text);
-//                    manager.insertNameTest(FirstFragment.text);
-//                    manager.insertNameQuestion(text);
-//                manager.insertNameQuestion(FirstFragment.text, text);
                     manager.closeDb();
                 }
                 dialog.dismiss();
@@ -201,11 +193,6 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
                 text=name_question1;
                 NavHostFragment.findNavController(SecondFragment.this)
                         .navigate(R.id.action_SecondFragment_to_TestCreate);
-//                dialog = null;
-//                Intent intent=new Intent();
-//                intent.putExtra("question", number_after_verification);
-//                intent.setClass(context, TestCreate.class);
-//                startActivity(intent);
                 break;
             case DELETE:
                 layout.removeView(textView);
@@ -220,16 +207,4 @@ public class SecondFragment extends Fragment implements View.OnClickListener {
 
         return super.onContextItemSelected(item);
     }
-
-//    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                NavHostFragment.findNavController(SecondFragment.this)
-//                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
-//            }
-//        });
-//    }
 }
